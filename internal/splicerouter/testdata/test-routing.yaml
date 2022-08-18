@@ -1,0 +1,38 @@
+routes:
+  - destination: infra/cmd/localdev/internal/splicerouter/testdata/some-service
+    method: GET
+    path: /some-service/.*
+    type: static
+  - destination: infra/cmd/localdev/internal/splicerouter/testdata/catalog
+    method: GET
+    path: /catalog/.*
+    type: static
+    template_type: go
+  - destination: infra/cmd/localdev/internal/splicerouter/testdata/handlebar
+    method: GET
+    path: /handlebar/.*
+    type: static
+    template_type: handlebar
+  - destination: infra/cmd/localdev/internal/splicerouter/testdata/static-service
+    method: GET
+    path: /static-service/static-data
+    type: static
+  - destination: infra/cmd/localdev/internal/splicerouter/testdata/static-service
+    method: GET
+    path: /static-service/static-param
+    query_params:
+      arg: mock
+    type: static
+  - destination: infra/cmd/localdev/internal/splicerouter/testdata/static-service
+    header:
+      x-query-loc: mock
+    method: GET
+    path: /static-service/static-header
+    type: static
+  - destination: infra/cmd/localdev/internal/splicerouter/testdata/direct_path_mock.mock
+    method: GET
+    path: /fixed-service/some/path/to/data
+    type: static
+  - destination: http://localhost:8081
+    path: /.*
+    type: proxy

@@ -1,0 +1,5 @@
+{{ define "content" }} {{ if and . .Msg}}
+<div class="alert" role="alert">{{ .Msg }}</div>
+{{ end }} {{ if and . .Error}}
+<div class="alert alert-danger" role="alert">{{ .Error }}</div>
+{{ end }} {{ end }}

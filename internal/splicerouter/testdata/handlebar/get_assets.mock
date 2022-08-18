@@ -1,0 +1,9 @@
+{
+  "assets": [{{#each asset_uuids}}
+    {
+      "asset_id": {{random_int}},
+      "asset_uuid": "{{this}}"
+    }{{#unless @last}},{{/unless}}{{/each}}
+  ]
+
+}

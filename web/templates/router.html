@@ -1,0 +1,73 @@
+{{ define "content" }}
+<script type="text/javascript">
+  function updateRoute(id) {
+    document.getElementById('update_id').value = id;
+    document.getElementById('update_priority').value = document.getElementById('priority' + id).value;
+    document.getElementById('update_method').value = document.getElementById('method' + id).value;
+    document.getElementById('update_path').value = document.getElementById('path' + id).value;
+    document.getElementById('update_destination').value = document.getElementById('destination' + id).value;
+    document.getElementById('updateForm').submit();
+  }
+  function deleteRoute(id) {
+    document.getElementById('delete_id').value = id;
+    document.getElementById('deleteForm').submit();
+  }
+</script>
+{{ template "router-nav-bar" "routes" }}
+<br />
+<h3><span class="badge badge-info">{{.Type}}</span></h3>
+<br />
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Priority</th>
+      <th scope="col">Method</th>
+      <th scope="col">Path</th>
+      <th scope="col">Destination</th>
+      <th scope="col">Destination Type</th>
+      <th scope="col">Template Type</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range $element := .Routes}}
+    <tr>
+      <td><input type="text" class="form-control" id="priority{{$element.ID}}" value="{{$element.Priority}}" /></td>
+      <td><input type="text" class="form-control" id="method{{$element.ID}}" value="{{$element.Method}}" /></td>
+      <td><input type="text" class="form-control" id="path{{$element.ID}}" value="{{$element.Path}}" /></td>
+      <td>
+        <input type="text" class="form-control" id="destination{{$element.ID}}" value="{{$element.Destination}}" />
+      </td>
+      <td>{{$element.Type}}</td>
+      <td>{{$element.TemplateType}}</td>
+      <td>
+        <button type="submit" class="btn btn-primary" onclick='updateRoute("{{$element.ID}}")'>Update</button
+        >&nbsp;&nbsp;<button type="submit" class="btn btn-primary" onclick='deleteRoute("{{$element.ID}}")'>
+          Delete
+        </button>
+      </td>
+    </tr>
+    {{end}}
+  </tbody>
+</table>
+<form action="/update-route" method="post" id="updateForm">
+  <input type="hidden" name="update_id" id="update_id" value="" />
+  <input type="hidden" name="update_priority" id="update_priority" value="" />
+  <input type="hidden" name="update_method" id="update_method" value="" />
+  <input type="hidden" name="update_path" id="update_path" value="" />
+  <input type="hidden" name="update_destination" id="update_destination" value="" />
+</form>
+<form action="/delete-route" method="post" id="deleteForm">
+  <input type="hidden" name="delete_id" id="delete_id" value="" />
+</form>
+
+<br />
+<br />
+<form action="/export-routes" method="post" id="exportRoutes">
+  <button type="submit" class="btn btn-primary">Save Configuration</button>
+</form>
+{{ if and . .Msg}}
+<div class="alert" role="alert">{{ .Msg }}</div>
+{{ end }} {{ if and . .Error}}
+<div class="alert alert-danger" role="alert">{{ .Error }}</div>
+{{ end }} {{ end }}

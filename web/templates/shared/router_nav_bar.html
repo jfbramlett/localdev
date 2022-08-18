@@ -1,0 +1,31 @@
+{{ define "router-nav-bar" }}
+<nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+  </ol>
+</nav>
+<br />
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    {{ if eq . "routes" }}
+    <a class="nav-link active" href="/router">List Routes</a>
+    {{ else }}
+    <a class="nav-link" href="/router">List Routes</a>
+    {{ end }}
+  </li>
+  <li class="nav-item">
+    {{ if eq . "create" }}
+    <a class="nav-link active" href="/create">Create Route</a>
+    {{ else }}
+    <a class="nav-link" href="/create">Create Route</a>
+    {{ end }}
+  </li>
+  <li class="nav-item">
+    {{ if eq . "genmocks" }}
+    <a class="nav-link active" href="/mocks">Sample Mock</a>
+    {{ else }}
+    <a class="nav-link" href="/mocks">Sample Mock</a>
+    {{ end }}
+  </li>
+</ul>
+{{ end }}

@@ -1,0 +1,181 @@
+{{ define "content" }}
+<script type="text/javascript">
+  function showReverseProxyDetails() {
+    if (document.getElementById('proxyTypeReverseProxy').checked === true) {
+      document.getElementById('reverseProxyDetails').style.display = 'block';
+      document.getElementById('mockDataDetails').style.display = 'none';
+    } else {
+      document.getElementById('reverseProxyDetails').style.display = 'none';
+      document.getElementById('mockDataDetails').style.display = 'block';
+    }
+  }
+
+  function showMockDataDetails() {
+    if (document.getElementById('proxyTypeMock').checked === true) {
+      document.getElementById('mockDataDetails').style.display = 'block';
+      document.getElementById('reverseProxyDetails').style.display = 'none';
+    } else {
+      document.getElementById('reverseProxyDetails').style.display = 'block';
+      document.getElementById('mockDataDetails').style.display = 'none';
+    }
+  }
+
+  function showEnvFields() {
+    showS3Details();
+  }
+</script>
+{{ template "router-nav-bar" "create" }}
+<br />
+
+<form action="/create-new" method="post" id="createForm">
+  <h3><span class="badge badge-info">New Route Configuration</span></h3>
+  <div class="card">
+    <div class="card-body">
+      <div class="form-group">
+        <label for="priorityField">Priority</label>
+        <input
+          type="text"
+          class="form-control"
+          id="priorityField"
+          name="priority"
+          placeholder="Priority"
+          required
+          value="0"
+        />
+      </div>
+      <div class="form-group">
+        <label for="pathField">Path</label>
+        <input type="text" class="form-control" id="pathField" name="path" placeholder="Enter Path Regex" required />
+      </div>
+      <div class="form-group">
+        <label for="methodField">Method</label>
+        <input
+          type="text"
+          class="form-control"
+          id="methodField"
+          name="method"
+          placeholder="Enter method"
+          required
+          value="POST"
+        />
+      </div>
+      <div class="form-group">
+        <label for="headersField">Headers</label>
+        <input type="text" class="form-control" id="headersField" name="headers" placeholder="Enter Headers" />
+      </div>
+      <br />
+      <div class="form-group">
+        <label>Direct Requests To</label>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="proxyType"
+            id="proxyTypeReverseProxy"
+            value="proxy"
+            checked
+            onclick="showReverseProxyDetails()"
+          />
+          <label class="form-check-label" for="proxyTypeReverseProxy"> Reverse Proxy </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="proxyType"
+            id="proxyTypeMock"
+            value="static"
+            onclick="showMockDataDetails()"
+          />
+          <label class="form-check-label" for="proxyTypeMock"> Mock Response </label>
+        </div>
+      </div>
+      <div class="card" id="reverseProxyDetails">
+        <div class="card-body">
+          <h4 class="card-title"><span class="badge badge-info">Reverse Proxy Details</span></h4>
+          <div class="form-group">
+            <label for="destinationField">Destination</label>
+            <input
+              type="text"
+              class="form-control"
+              id="destinationField"
+              name="reverseProxyDestination"
+              placeholder="Enter destination"
+              value="https://preprod.gateway.splice.com"
+            />
+          </div>
+          <div class="form-group">
+            <label for="headerEnrichmentField">Headers to Add</label>
+            <input
+              type="text"
+              class="form-control"
+              id="headerEnrichmentField"
+              name="headerEnrichments"
+              placeholder="Additional Headers"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card" id="mockDataDetails" style="display: none">
+        <div class="card-body">
+          <h4 class="card-title"><span class="badge badge-info">Mock Data Details</span></h4>
+          <div class="form-group">
+            <label>Mock Data Template Type</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="templateType" id="templateGoTypeField" value="go" />
+              <label class="form-check-label" for="templateGoTypeField"> golang </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="templateType"
+                id="templateTypeHandlebarField"
+                value="handlebar"
+                checked
+              />
+              <label class="form-check-label" for="templateTypeHandlebarField"> handlebars </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label
+              for="reverseProxyDestinationField"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Can be a folder which maps to the root of the specified path with folders and eventually a file based on the remaining url path or can be a specific file."
+              >Destination</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="reverseProxyDestinationField"
+              name="mockDataDestination"
+              placeholder="Enter directory containing one or more mock data files"
+            />
+          </div>
+          <div class="form-group">
+            <label>OR</label>
+          </div>
+          <div class="form-group">
+            <span class="input-group-text">Mock Response</span>
+            <textarea
+              rows="20"
+              id="mockResponse"
+              name="mockResponse"
+              class="form-control"
+              aria-label="With textarea"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  <br />
+</form>
+{{ if and . .Error}}
+<div class="alert alert-danger" role="alert">{{ .Error }}</div>
+{{ end }} {{ if and . .Msg}}
+<div class="alert" role="alert">{{ .Msg }}</div>
+{{ end }} {{ end }}

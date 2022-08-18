@@ -1,0 +1,41 @@
+{{ define "content" }}
+<script>
+  function sbmitRouter() {
+    document.getElementById('router').submit();
+  }
+</script>
+
+<br />
+<h3><span class="badge badge-info">Available Commands</span></h3>
+<br />
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <form action="/router" method="get" id="router">
+        <div class="card" style="width: 18rem">
+          <a href="#" class="btn btn-primary" onclick="sbmitRouter()">
+            <div class="card-body">
+              <h5 class="card-title">Splice Router Config</h5>
+            </div>
+          </a>
+        </div>
+      </form>
+    </div>
+    <div class="col">
+      <form action="/unit-tests" method="get" id="unittests">
+        <div class="card" style="width: 18rem">
+          <a href="#" class="btn btn-primary" onclick="sbmitRouter()">
+            <div class="card-body">
+              <h5 class="card-title">Run Unit Tests</h5>
+            </div>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{{ if and . .Msg}}
+<div class="alert" role="alert">{{ .Msg }}</div>
+{{ end }} {{ if and . .Error}}
+<div class="alert alert-danger" role="alert">{{ .Error }}</div>
+{{ end }} {{ end }}

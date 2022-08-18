@@ -1,0 +1,39 @@
+{{ define "content" }} {{ template "router-nav-bar" "genmocks" }}
+<br />
+
+<form action="/generate-mock" method="post" id="generateMock">
+  <div class="card">
+    <div class="card-body">
+      <label class="form-check-label" for="availableMockField">Type to Generate</label>
+      <div class="form-select">
+        <select
+          id="availableMockField"
+          name="mocks"
+          class="form-select form-select-lg mb-3"
+          aria-label=".form-select-lg example"
+        >
+          {{range $element := .MockTypes}}
+          <option selected value="{{ $element }}">{{ $element }}</option>
+          {{end}}
+        </select>
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Generate</button>
+  <br />
+</form>
+<br />
+<br />
+<h3><span class="badge badge-info">{{.Type}}</span></h3>
+<div class="input-group">
+  <span class="input-group-text">Sample Mock</span>
+  <textarea rows="20" id="sampleMock" name="sampleMock" class="form-control" aria-label="With textarea">
+{{ .MockData }}</textarea
+  >
+</div>
+
+{{ if and . .Error}}
+<div class="alert alert-danger" role="alert">{{ .Error }}</div>
+{{ end }} {{ if and . .Msg}}
+<div class="alert" role="alert">{{ .Msg }}</div>
+{{ end }} {{ end }}

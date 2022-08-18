@@ -1,0 +1,9 @@
+{
+  "assets": [{{$lenUUIDs := len .asset_uuids}}{{range  $index, $uuid := .asset_uuids}}
+    {
+      "asset_id": {{random_int}},
+      "asset_uuid": "{{$uuid}}"
+    }{{if not (is_last $index $lenUUIDs)}},{{end}}{{end}}
+  ]
+
+}
